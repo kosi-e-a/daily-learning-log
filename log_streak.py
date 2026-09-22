@@ -1,8 +1,9 @@
-
-g_streak.py
+#!/usr/bin/env python3
+"""
+log_streak.py
 
 Run this after finishing your daily learning session.
-It logs the entry, commits it, and pushes to GitHub —
+It logs the entry, commits it, and pushes to GitHub,
 so your real contribution graph reflects real study days.
 
 Usage:
@@ -46,7 +47,7 @@ def ensure_git_repo():
 def append_log(message, hours):
     today = datetime.date.today().isoformat()
     hours_str = f" ({hours}h)" if hours else ""
-    line = f"{today}{hours_str} — {message}\n"
+    line = f"{today}{hours_str} - {message}\n"
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(line)
     return line.strip()
@@ -65,7 +66,7 @@ def commit_and_push(message, hours):
     ok, out = run(f'git commit -m "{commit_msg}"')
     if not ok:
         if "nothing to commit" in out:
-            print("Nothing new to commit — did you already log today?")
+            print("Nothing new to commit - did you already log today?")
         else:
             print("git commit failed:", out)
         sys.exit(1)
@@ -73,10 +74,10 @@ def commit_and_push(message, hours):
     ok, out = run("git push")
     if not ok:
         print("git push failed:", out)
-        print("Your commit is saved locally — push manually with: git push")
+        print("Your commit is saved locally - push manually with: git push")
         sys.exit(1)
 
-    print("Pushed to GitHub ✅")
+    print("Pushed to GitHub - success")
 
 
 def main():
