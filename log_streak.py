@@ -83,8 +83,8 @@ def commit_and_push(message, hours):
 def main():
     parser = argparse.ArgumentParser(description="Log a completed study session.")
     parser.add_argument(
-        "message", nargs="?", default="completed",
-        help="What you studied/completed (optional)"
+        "message", nargs="?", default=None,
+        help="What you studied/completed (optional - will prompt if omitted)"
     )
     parser.add_argument(
         "--hours", type=float, default=None,
@@ -93,9 +93,16 @@ def main():
     args = parser.parse_args()
 
     ensure_git_repo()
-    line = append_log(args.message, args.hours)
+
+    message = args.message
+    if message is None:
+        message = input("What did you learn today? ").strip()
+        if not message:
+            message = "completed"
+
+    line = append_log(message, args.hours)
     print(f"Logged: {line}")
-    commit_and_push(args.message, args.hours)
+    commit_and_push(message, args.hours)
 
 
 if __name__ == "__main__":
